@@ -1,21 +1,38 @@
 <header>
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="#">Fixed navbar</a>
+    <a class="navbar-brand" href="#">Scrambledeggs</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          <%= link_to "Home", root_path, class: "nav-link" %>
         </li>
       </ul>
+      <% if current_user.member? %>
+        <div class="dropdown">
+          <button class="btn btn-link" type="button" id="dropdown-tray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            My Tray <span id="total_cart_items">(<%= @current_tray.line_items.count %>)</span>
+          </button>
+          <ul class="dropdown-menu cart-view p-0 border-0 dropdown-menu-right p-0" aria-labelledby="dropdown-tray" style="width: 300px;">
+            <li class="dropdown-item p-0 border-0">
+              <ul class="list-group" id="tray-line-items">
+                <% @current_tray.line_items.each do |line_item| %>
+                  <%= render "line_items/line_item", line_item: line_item %>
+                <% end %>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Total (USD)</span>
+                  <strong><%= number_to_currency(@current_tray.sub_total)  %></strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <%= link_to "View My Tray", tray_path(@current_tray), class: "btn btn-block btn-primary" %>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      <% end %>
       <div class="dropdown">
         <button class="btn btn-link" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <%= current_user.first_name %> <%= current_user.last_name %>

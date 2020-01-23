@@ -7,15 +7,28 @@
     <title>Scrambledeggs</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <% if user_signed_in? %>
-      <%= render "shared/header" %>
+    <% if user_signed_in? && current_user.admin? %>
+      <div class="d-flex" id="wrapper">
+        <%= render "shared/admin/sidebar" %>
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+          <%= render "shared/admin/header" %>
+          <div class="container-fluid">
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <% if user_signed_in? %>
+        <%= render "shared/header" %>
+      <% end %>
+      <%= yield %>
     <% end %>
-    <%= yield %>
   </body>
 </html>

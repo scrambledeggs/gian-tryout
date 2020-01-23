@@ -1,0 +1,2 @@
+$("#total_cart_items").html("<%= @current_tray.line_items.count %>");
+$("#tray-line-items").prepend("<%= escape_javascript(render 'line_items/line_item', line_item: @line_item) %>");

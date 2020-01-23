@@ -1,0 +1,159 @@
+<div class="container">
+<div class="row" style="margin-top: 100px;">
+  <div class="col-md-4 order-md-2 mb-4">
+    <h4 class="d-flex justify-content-between align-items-center mb-3">
+      <span class="text-muted">Your cart</span>
+      <span class="badge badge-secondary badge-pill"><%= @current_tray.line_items.count %></span>
+    </h4>
+    <ul class="list-group mb-3">
+      <% @current_tray.line_items.each do |line_item| %>
+        <%= render "line_items/line_item", line_item: line_item %>
+      <% end %>
+      <li class="list-group-item d-flex justify-content-between">
+        <span>Total (USD)</span>
+        <strong><%= number_to_currency(@current_tray.sub_total)  %></strong>
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-8 order-md-1">
+    <%= form_for(@order, html: { class: 'needs-validation', remote: true }) do |f| %>
+      <h4 class="mb-3">Order Details</h4>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <%= f.label :pickup_time %>
+          <%= f.time_field :pickup_time, autofocus: true, class: "form-control" %>
+          <div class="invalid-feedback">
+            Valid first name is required.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <%= f.label :note, "Notes (Optional)" %>
+          <%= f.text_area :note, rows: 3, class: "form-control" %>
+          <div class="invalid-feedback">
+            Valid first name is required.
+          </div>
+        </div>
+      </div>
+      <h4 class="mb-3">Billing address</h4>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <%= f.label :first_name %>
+          <%= f.text_field :first_name, autofocus: true, class: "form-control" %>
+          <div class="invalid-feedback">
+            Valid first name is required.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <%= f.label :last_name %>
+          <%= f.text_field :last_name, autofocus: true, class: "form-control" %>
+          <div class="invalid-feedback">
+            Valid last name is required.
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <%= f.label :email %>
+        <%= f.email_field :email, autofocus: true, class: "form-control" %>
+        <div class="invalid-feedback">
+          Please enter a valid email address for shipping updates.
+        </div>
+      </div>
+      <div class="mb-3">
+        <%= f.label :address_line_1 %>
+        <%= f.text_field :address_line_1, autofocus: true, class: "form-control" %>
+        <div class="invalid-feedback">
+          Please enter your shipping address.
+        </div>
+      </div>
+      <div class="mb-3">
+        <%= f.label :address_line_2 %>
+        <%= f.text_field :address_line_2, autofocus: true, class: "form-control" %>
+      </div>
+      <div class="row">
+        <div class="col-md-5 mb-3">
+          <%= f.label :province %>
+          <%= f.text_field :province, autofocus: true, class: "form-control" %>
+          <div class="invalid-feedback">
+            Please select a valid country.
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <%= f.label :city %>
+          <%= f.text_field :city, autofocus: true, class: "form-control" %>
+          <div class="invalid-feedback">
+            Please provide a valid state.
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <%= f.label :zip %>
+          <%= f.text_field :zip, autofocus: true, class: "form-control" %>
+          <div class="invalid-feedback">
+            Zip code required.
+          </div>
+        </div>
+      </div>
+      <hr class="mb-4">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="same-address">
+        <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>
+      </div>
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="save-info">
+        <label class="custom-control-label" for="save-info">Save this information for next time</label>
+      </div>
+      <hr class="mb-4">
+      <h4 class="mb-3">Payment</h4>
+      <div class="d-block my-3">
+        <div class="custom-control custom-radio">
+          <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked="">
+          <label class="custom-control-label" for="credit">Credit card</label>
+        </div>
+        <div class="custom-control custom-radio">
+          <input id="debit" name="paymentMethod" type="radio" class="custom-control-input">
+          <label class="custom-control-label" for="debit">Debit card</label>
+        </div>
+        <div class="custom-control custom-radio">
+          <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input">
+          <label class="custom-control-label" for="paypal">PayPal</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="cc-name">Name on card</label>
+          <input type="text" class="form-control" id="cc-name" placeholder="">
+          <small class="text-muted">Full name as displayed on card</small>
+          <div class="invalid-feedback">
+            Name on card is required
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="cc-number">Credit card number</label>
+          <input type="text" class="form-control" id="cc-number" placeholder="">
+          <div class="invalid-feedback">
+            Credit card number is required
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label for="cc-expiration">Expiration</label>
+          <input type="text" class="form-control" id="cc-expiration" placeholder="">
+          <div class="invalid-feedback">
+            Expiration date required
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="cc-cvv">CVV</label>
+          <input type="text" class="form-control" id="cc-cvv" placeholder="">
+          <div class="invalid-feedback">
+            Security code required
+          </div>
+        </div>
+      </div>
+      <hr class="mb-4">
+      <%= f.submit "Proceed Order", class: "btn btn-primary btn-lg btn-block", data: { "disabled_with": "Processing orders ..." } %>
+    <% end %>
+  </div>
+</div>

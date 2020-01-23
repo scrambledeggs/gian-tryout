@@ -10,10 +10,55 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_23_035138) do
+ActiveRecord::Schema.define(version: 2020_01_23_085031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "dishes", force: :cascade do |t|
+    t.string "name"
+    t.decimal "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "line_items", force: :cascade do |t|
+    t.integer "quantity"
+    t.bigint "dish_id"
+    t.bigint "tray_id"
+    t.bigint "order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dish_id"], name: "index_line_items_on_dish_id"
+    t.index ["order_id"], name: "index_line_items_on_order_id"
+    t.index ["tray_id"], name: "index_line_items_on_tray_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.text "address"
+    t.time "pickup_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "address_line_1"
+    t.string "address_line_2"
+    t.string "province"
+    t.string "city"
+    t.string "mobile_number"
+    t.integer "zip"
+    t.text "note"
+    t.integer "user_id"
+    t.integer "status", default: 0
+  end
+
+  create_table "trays", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "first_name", null: false
